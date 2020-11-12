@@ -15,27 +15,50 @@ $("#taskInput").on("click", function(){
     textInput.trigger("focus");
 });
 
-
-$("#saveBtn").on("click", function() {
+$(".saveBtn").on("click", function() {
 
     var text = $(this)
-    .closest(".taskArea")
-    
+        .closest(".hour")
+        .text()
+        .trim();
+      
     var time = $(this)
-    .closest("taskTime")
-
+        .closest(".hour")
+        .text()
+        .trim();
+    
     var tasks = {
         task: text,
         dueTime: time
 
-    }
-
-    saveTask = function() {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
     };
-    
 
+    console.log(tasks);
+
+    var storedTasks = [tasks];
+
+    localStorage.setItem("tasks", JSON.stringify(storedTasks));
+    
 });
 
+var taskClock = function() {
+
+    var currentHour = moment().format("H");
+    
+    console.log(currentHour);
+
+    if(currentHour < $(".data-time") ){
+        $("#taskInput").addClass(".past")
+    } else if (currentHour === $(".data-time")){
+        $("#taskInput").addClass(".present")
+    } else {
+        $("#taskInput").addClass(".future")
+    };
+
+    
 
 
+}
+
+
+taskClock();
