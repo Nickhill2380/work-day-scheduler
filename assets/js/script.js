@@ -50,9 +50,12 @@ var taskClock = function() {
     
         var currentHour = moment().format("H");
 
-      if(currentHour < $(this).attr("id") ){
+        console.log(currentHour);
+        console.log($(this));
+
+      if(currentHour > $("[data-hour]")){
         $(this).addClass("past")
-    } else if (currentHour === $(this).attr("id")){
+    } else if (currentHour === $("[data-hour]")){
         $(this).addClass("present")
     } else 
         $(this).addClass("future")
