@@ -5,34 +5,56 @@ $(document).ready(function(){
 });
 
 
-$(".taskArea").on("blur", "textarea", function(){
+/*var createTask = function(taskText, oldTextArea) {
+
+    var textArea = $("<textarea>")
+        .addClass("col-10 taskArea description timeColor")
+        .text(taskText)
+   
+    oldTextArea.replaceWith(textArea);
+
+    //use the act of creating a new task to make sure the taskClock() is current
+    taskClock();
+} */
+
+
+$(".taskArea").on("blur", function(){
    
     var text = $(this)
     .val()
     .trim();
-
     
-    var textInput = $("<textarea>")
+    var taskSpan = $("<p>")
+        .addClass("storageSpan")
+        .text(text)
+
+    $(this).append(taskSpan);
+    
+    /*var textInput = $("<textarea>")
     .addClass("description col-10")
     .text(text);
-
-    $(this).append(text);
-
-    $(this).replaceWith(textInput);
+    createTask(textInput,$(this));*/
     
 });
 
 $(".saveBtn").on("click", function() {
 
-    var text = $(this)
-        .text()
-        .trim();
-
-    var time = $(this)
+    var taskInfo = $(this)
         .closest(".hour")
         .text()
         .trim();
     
+    arrInfo = taskInfo.split( "\n");
+    
+    console.log(arrInfo);
+
+    var time = arrInfo[0];
+
+
+    var text = arrInfo[1]
+        .trim();
+    
+
     var tasks = {
         task: text,
         dueTime: time
@@ -52,15 +74,13 @@ var taskClock = function() {
     $(".taskArea").each(function() {
     
     var currentHour = moment().format("H");
-        console.log($(this).data("hour"));
-        console.log(currentHour);
+        
       if(currentHour > $(this).data("hour")){
         $(this).addClass("past")     
     } else if (currentHour < $(this).data("hour")){
         $(this).addClass("future")
     } else {
-        $(this).addClass("present")
-        
+        $(this).addClass("present")  
     }
     
 });
