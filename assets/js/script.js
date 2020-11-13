@@ -5,26 +5,29 @@ $(document).ready(function(){
 });
 
 
-/*$("#taskInput").on("click", function(){
+$(".taskArea").on("blur", "textarea", function(){
+   
     var text = $(this)
-    .text()
+    .val()
     .trim();
 
+    
     var textInput = $("<textarea>")
     .addClass("description col-10")
-    .val(text);
+    .text(text);
+
+    $(this).append(text);
 
     $(this).replaceWith(textInput);
-    textInput.trigger("focus");
-});*/
+    
+});
 
 $(".saveBtn").on("click", function() {
 
     var text = $(this)
-        .closest(".taskArea")
         .text()
         .trim();
-      
+
     var time = $(this)
         .closest(".hour")
         .text()
@@ -48,18 +51,17 @@ var taskClock = function() {
 
     $(".taskArea").each(function() {
     
-        var currentHour = moment().format("H");
-
+    var currentHour = moment().format("H");
+        console.log($(this).data("hour"));
         console.log(currentHour);
-        console.log($(this));
-
-      if(currentHour > $("[data-hour]")){
-        $(this).addClass("past")
-    } else if (currentHour === $("[data-hour]")){
-        $(this).addClass("present")
-    } else 
+      if(currentHour > $(this).data("hour")){
+        $(this).addClass("past")     
+    } else if (currentHour < $(this).data("hour")){
         $(this).addClass("future")
-    
+    } else {
+        $(this).addClass("present")
+        
+    }
     
 });
 
