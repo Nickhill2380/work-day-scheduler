@@ -4,68 +4,77 @@ $(document).ready(function(){
     $("#currentDay").text(moment().format('dddd, MMMM Do') );
 });
 
+var createTask = function(taskText, dueTime) {
 
-/*var createTask = function(taskText, oldTextArea) {
+        $("div").find(dueTime).val(taskText);
 
-    var textArea = $("<textarea>")
-        .addClass("col-10 taskArea description timeColor")
-        .text(taskText)
-   
-    oldTextArea.replaceWith(textArea);
-
-    //use the act of creating a new task to make sure the taskClock() is current
     taskClock();
-} */
-
+} 
 
 $(".taskArea").on("blur", function(){
    
     var text = $(this)
-    .val()
-    .trim();
-    
-    var taskSpan = $("<p>")
-        .addClass("storageSpan")
+        .val()
+        .trim();
+
+    var textArea = $(this);
+        
+    textArea.val(text);
+
+    console.log($(this).val());
+    /*var timeColor = $(this).data("hour");
+
+    var taskSpan = $("<textarea>")
+        .addClass("col-10 description taskArea timeColor")
+        .data(timeColor, "hour")
         .text(text)
 
-    $(this).append(taskSpan);
-    
-    /*var textInput = $("<textarea>")
-    .addClass("description col-10")
-    .text(text);
-    createTask(textInput,$(this));*/
-    
+    $(this).replaceWith(taskSpan);*/
+
+    taskClock();
+        
 });
 
 $(".saveBtn").on("click", function() {
-
-    var taskInfo = $(this)
+    
+    var taskTime = $(this)
         .closest(".hour")
         .text()
         .trim();
     
-    arrInfo = taskInfo.split( "\n");
+    var taskText = $(this)
+        .prev()
+        .val()
+        .trim();    
+        
+        console.log(taskTime);
+        console.log(taskText);
     
-    console.log(arrInfo);
+    /*var arrInfo = taskInfo.split( "\n");
 
+    console.log(arrInfo);
+    
     var time = arrInfo[0];
 
-
-    var text = arrInfo[1]
-        .trim();
+    var text = arrInfo[1].trim();
     
+    for(var i = 0; i < storedTasks.length; i++) {
+        if (storedTasks[i].dueTime === arrInfo[0] ) {
+            storedTasks[i].task = text;             
+        } 
+
+    }*/
 
     var tasks = {
-        task: text,
-        dueTime: time
-
+        task: taskText,
+        dueTime: taskTime
     };
-
-    console.log(tasks);
 
     storedTasks.push(tasks);
 
     localStorage.setItem("tasks", JSON.stringify(storedTasks));
+
+    createTask(taskText, taskTime);
     
 });
 
@@ -87,6 +96,17 @@ var taskClock = function() {
 
 };
 
-taskClock();
+var loadTask = function () {
+    
+    storedTasks = JSON.parse(localStorage.getItem("tasks"));
 
+    if (!storedTasks) {
+        storedTasks = [];
+    }
 
+    $.each(storedTasks, function() {
+        createTask(storedTasks.task, storedTasks.dueTime)
+    });
+};
+
+loadTask();
