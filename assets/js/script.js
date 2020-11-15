@@ -13,7 +13,7 @@ var createTask = function(taskText, dueTime) {
     taskClock();
 } 
 
-$(".taskArea").on("blur", function(){
+$(".description").on("blur", function(){
    
     var text = $(this)
         .val()
@@ -54,7 +54,7 @@ $(".saveBtn").on("click", function() {
 
 var taskClock = function() {
 
-    $(".taskArea").each(function() {
+    $(".description").each(function() {
     
     var currentHour = moment().format("H");
         
